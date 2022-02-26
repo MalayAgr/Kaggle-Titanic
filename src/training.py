@@ -65,6 +65,9 @@ class Engine:
         plt.plot(train_loss, label="Training")
         plt.plot(val_loss, label="Validation")
 
+        best_iter = self.model.best_iteration
+        plt.axvline(best_iter, color="black", linestyle="--", label="Best iteration")
+
         plt.xlabel("Round")
         plt.ylabel("Loss")
         plt.title("Loss Curve")
@@ -143,10 +146,15 @@ def train(
     gpu: bool = False,
     save_model: bool = False,
     directory: str = "",
+    save_every: int = None,
 ) -> tuple[np.float32, np.float32]:
 
-    if save_model is True and not directory:
-        raise ValueError("A directory is required when save_model is True.")
+    if save_model is True:
+        if not directory:
+            raise ValueError("directory cannot be empty when save_model is True.")
+
+        if save_every is None:
+            raise ValueError("save_every cannot be None when save_model is True.")
 
     cv = model_selection.StratifiedKFold(
         n_splits=config.FOLDS, shuffle=True, random_state=42
@@ -180,7 +188,7 @@ def train(
             )
             gc.collect()
 
-            if save_model is True and fold % 3 == 2:
+            if save_model is True and fold % save_every == save_every - 1:
                 key = fold + 1
                 engine.save_model(directory, f"model-{key}.json")
                 engine.save_roc_curve(X_val, y_val, directory, f"model-{key}.png")

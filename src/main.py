@@ -32,7 +32,7 @@ def make_model_dirs():
 
 
 def train_baseline(
-    X: np.ndarray, y: np.ndarray, gpu: bool = False
+    X: np.ndarray, y: np.ndarray, gpu: bool = False, save_every: int = None
 ) -> tuple[np.float32, np.float32]:
     params = {
         "max_depth": config.MAX_DEPTH,
@@ -51,6 +51,7 @@ def train_baseline(
         gpu=gpu,
         save_model=True,
         directory=config.NO_TUNED_MODELS_DIR,
+        save_every=save_every,
     )
 
     return roc, loss
@@ -61,21 +62,22 @@ def train_with_optuna(
     y: np.ndarray,
     n_trials: int = 50,
     gpu: bool = False,
+    save_every: int = None,
 ) -> tuple[np.float32, np.float32]:
     objective_ = functools.partial(tuning.objective, X=X, y=y, pruner=True, gpu=gpu)
+
+    sampler = optuna.samplers.TPESampler(seed=42, multivariate=True)
 
     study = optuna.create_study(
         direction="minimize",
         pruner=optuna.pruners.MedianPruner(n_warmup_steps=5),
+        sampler=sampler,
     )
 
     print("Finding best parameters:")
     study.optimize(objective_, n_trials=n_trials, gc_after_trial=True)
 
     best_trial = study.best_trial
-
-    print("Best trial:")
-    print(best_trial)
 
     print("\nTraining model with the best obtained hyperparameters:\n")
 
@@ -86,6 +88,7 @@ def train_with_optuna(
         gpu=gpu,
         save_model=True,
         directory=config.TUNED_MODELS_DIR,
+        save_every=save_every,
     )
 
     return roc, loss
@@ -100,10 +103,12 @@ def main():
     features = train_df.drop(["Survived", "PassengerId"], axis=1).values
     labels = train_df["Survived"].values
 
-    roc, loss = train_baseline(X=features, y=labels)
+    roc, loss = train_baseline(X=features, y=labels, save_every=2)
     print(f"Baseline model: Average ROC={roc:.4f}; Average validation loss={loss:.4f}")
 
-    roc, loss = train_with_optuna(X=features, y=labels, n_trials=config.N_TRIALS)
+    roc, loss = train_with_optuna(
+        X=features, y=labels, n_trials=config.N_TRIALS, save_every=2
+    )
     print(
         f"Optuna-tuned model: Average ROC={roc:.4f}; Average validation loss={loss:.4f}"
     )
