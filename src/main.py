@@ -39,6 +39,7 @@ def train_baseline(
         "n_estimators": config.N_ESTIMATORS,
         "alpha": config.ALPHA,
         "lr": config.LR,
+        "scale_pos_weight": sum(y == 0) / sum(y == 1),
         "early_stopping_rounds": config.EARLY_STOPPING_ROUNDS,
     }
 
