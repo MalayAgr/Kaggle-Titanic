@@ -91,7 +91,7 @@ git clone https://github.com/MalayAgr/Kaggle-Titanic.git
 - `cd` into the repository:
 
 ```shell
-cd Kaggle-Dogs-Vs-Cats
+cd Kaggle-Titanic
 ```
 
 - If using the default value for `TUNED_MODELS_DIR` and `NO_TUNED_MODELS_DIR`, make sure there is a directory called `models`:
