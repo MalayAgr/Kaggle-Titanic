@@ -22,6 +22,7 @@ def objective(
         "early_stopping_rounds": trial.suggest_categorical(
             "early_stopping_rounds", [5, 10, 15, 20, 25]
         ),
+        "booster": trial.suggest_categorical("booster", ["gblinear", "gbtree"]),
         "scale_pos_weight": trial.suggest_float("scale_pos_weight", 1, 5, log=True),
     }
 
