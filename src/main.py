@@ -10,6 +10,7 @@ import pandas as pd
 from rich import print
 
 import config
+import data
 import training
 import tuning
 
@@ -97,6 +98,28 @@ def train_with_optuna(
 
 def main():
     make_model_dirs()
+
+    to_be_encoded = ["Sex", "Pclass", "Embarked"]
+
+    imputation_features = [
+        "Pclass",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Age",
+        "Sex",
+        "FamilySize",
+        "GroupSize",
+    ]
+
+    preprocessor = data.DataPreprocessor(
+        "train.csv",
+        "test.csv",
+        to_be_encoded=to_be_encoded,
+        imputation_features=imputation_features,
+    )
+
+    preprocessor.preprocess()
 
     path = os.path.join(config.DATA_DIR, "final_train.csv")
     train_df = pd.read_csv(path)
