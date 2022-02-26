@@ -1,0 +1,12 @@
+DATA_DIR = "../data"
+N_JOBS = 2
+MAX_DEPTH = 5
+ALPHA = 0.3
+LR = 0.3
+N_ESTIMATORS = 100
+FOLDS = 15
+EARLY_STOPPING_ROUNDS = 15
+SHUFFLE = True
+TUNED_MODELS_DIR = "../models/tuned"
+NO_TUNED_MODELS_DIR = "../models/no-tuning"
+N_TRIALS = 50
