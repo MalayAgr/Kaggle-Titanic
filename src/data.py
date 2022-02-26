@@ -23,7 +23,7 @@ def encode(
 def impute_missing(values: np.ndarray, n_neighbors: int = 5) -> np.ndarray:
     scaler = preprocessing.MinMaxScaler()
     temp = scaler.fit_transform(values)
-    imputer = impute.KNNImputer(n_neighbors=5)
+    imputer = impute.KNNImputer(n_neighbors=5, weights="distance")
     imputed = imputer.fit_transform(temp)
     return scaler.inverse_transform(imputed)
 
