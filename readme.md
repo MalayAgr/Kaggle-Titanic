@@ -2,7 +2,9 @@
 
 A complete pipeline for training and tuning (using [Optuna](https://optuna.org/)) an XGBoost model to predict survivability chances of passengers on the Titanic.
 
-**Competition link**: [https://www.kaggle.com/c/titanic](https://www.kaggle.com/c/titanic).
+**Competition link**: [Titanic - Machine Learning from Disaster](https://www.kaggle.com/c/titanic).
+
+**Notebook link**: [XGBoost + Optuna For The Titanic Dataset](https://www.kaggle.com/defcodeking/xgboost-optuna-for-the-titanic-dataset).
 
 ## <!-- omit in toc --> Table of Contents
 
