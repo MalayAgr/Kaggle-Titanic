@@ -1,4 +1,4 @@
-# <!-- omit in toc --> Dogs vs. Cats - Kaggle
+# <!-- omit in toc --> Titanic - Kaggle
 
 A complete pipeline for training and tuning (using [Optuna](https://optuna.org/)) an XGBoost model to predict survivability chances of passengers on the Titanic.
 
